@@ -10,4 +10,4 @@ Wonder SDK is a Python library that facilitates communication with a Hiwonder Tu
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone 
+   git clone https://github.com/dmberezovskyii/fast-hiwonder
