@@ -46,7 +46,6 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           skip_existing: true
-          user: __toke__
+          user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
-          packages-dir: dist/
           url: https://pypi.org/project/turbopi-fast-sdk/
