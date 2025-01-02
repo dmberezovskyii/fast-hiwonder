@@ -22,7 +22,5 @@ jobs:
         uses: pypa/gh-action-pypi-publish@master
         with:
           skip_existing: true
-          user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
-          run: echo "${{ secrets.PYPI_API_TOKEN }}"
           
