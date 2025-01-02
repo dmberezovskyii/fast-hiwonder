@@ -41,22 +41,6 @@ jobs:
           path: dist/
           retention-days: 7 # Keep artifacts for debugging for 7 days.
 
-  pypi-publish:
-    name: Publish to PyPI
-    runs-on: ubuntu-latest
-    needs: release-build
-    environment:
-      name: pypi
-      url: https://pypi.org/project/turbopi-fast-sdk/
-
-    steps:
-      # Download the built distributions from the previous job.
-      - name: Download Distributions
-        uses: actions/download-artifact@v4
-        with:
-          name: release-distributions
-          path: dist/
-
       # Publish the distributions to PyPI.
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -65,5 +49,4 @@ jobs:
           user: __toke__
           password: ${{ secrets.PYPI_API_TOKEN }}
           packages-dir: dist/
-        env:
-          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+          url: https://pypi.org/project/turbopi-fast-sdk/
