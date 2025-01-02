@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "turbopi-fast-sdk"
-version = "0.1.1"
+version = "0.1.3"
 description = "Python SDK for hiwonder TurboPi device communication"
 authors = ["Dmytro Berezovskyi <dmberezovskyi@gmail.com>"]
 license = "MIT"
