@@ -90,5 +90,9 @@ If the robot needs to move at a speed of 100 mm/s in the direction of 30 degrees
 
     # Stop all motors and reset movement attributes
     chassis.reset_motors()
-   ``` 
+   ```
+## External Links
+
+You can find more information about the TurboPi robot [here](https://www.hiwonder.com/collections/raspberrypi-bionic-robot/products/turbopi?variant=40947238731863).
+
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-personal-page.svg)](https://stand-with-ukraine.pp.ua)
