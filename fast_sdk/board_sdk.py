@@ -4,13 +4,13 @@ import serial
 
 from typing import List, Tuple
 
-from fast_sdk.utils.utils import checksum_crc8
+from fast_sdk.utils.check_sum import checksum_crc8
 from fast_sdk.utils.functions import Functions
 
 
 class BoardSDK:
     """
-    Represents a game controller board with functionality to set RGB LEDs and interact with buttons.
+    Represents a controller board with functionality to set RGB LEDs and buzzer with buttons.
     """
 
     MAGIC_HEADER_1 = 0xAA
