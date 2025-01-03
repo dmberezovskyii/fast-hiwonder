@@ -1,9 +1,8 @@
-name: Upload Python Package
-
 on:
   workflow_dispatch:
   release:
     types: [published]
+
 jobs:
   pypi-publish:
     name: Upload release to PyPI
@@ -14,13 +13,22 @@ jobs:
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
+
+      - name: Clear Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Build Package
         run: |
           python3 -m pip install --upgrade pip build
           python3 -m build
+
       - name: Publish to TestPyPi
         uses: pypa/gh-action-pypi-publish@master
         with:
           skip_existing: true
           password: ${{ secrets.PYPI_API_TOKEN }}
-          
