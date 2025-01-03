@@ -3,7 +3,8 @@
 Fast Wonder SDK is a Python library that facilitates communication with a Hiwonder TurboPi controller.
 
 ## Features
-- Set RGB LED colors using indexed tuples.
+- Control RGB, LED colors using indexed tuples.
+- Control BUZZER
 - Reliable communication with checksum validation using CRC-8.
 - Easily configurable serial communication parameters.
 
