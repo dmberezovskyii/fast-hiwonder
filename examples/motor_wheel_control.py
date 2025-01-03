@@ -5,7 +5,7 @@ from fast_sdk.motors import Motors
 
 # Example Usage: Moving the robot in a square path
 def move_in_square(
-    mecanum_wheel, side_length=100, speed=50, angular_rate=30, fake=False
+    mecanum_wheel: Motors, side_length=100, speed=50, angular_rate=30, fake=False
 ):
     """
     Move the robot in a square path.
@@ -17,17 +17,17 @@ def move_in_square(
     """
     for _ in range(4):  # Move in 4 directions to form a square
         # Move forward
-        mecanum_wheel.move_by_cartesian(
+        mecanum_wheel.move_chassis_cartesian(
             speed, 0, fake=fake
         )  # Move along X direction
         time.sleep(side_length / speed)  # Wait for the robot to complete the side
 
         # Turn 90 degrees (clockwise)
-        mecanum_wheel.set_polar_movement(0, 0, angular_rate, fake=fake)
+        mecanum_wheel.set_velocity_polar(0, 0, angular_rate, fake=fake)
         time.sleep(90 / angular_rate)  # Wait for the robot to complete the turn
 
         # Reset the angular rate after turning
-        mecanum_wheel.stop_motors()
+        mecanum_wheel.reset_motors()
 
 
 motors = Motors()
