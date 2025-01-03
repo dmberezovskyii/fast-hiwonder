@@ -4,13 +4,14 @@ import serial
 
 from typing import List, Tuple
 
+# Fast SDK Utilities
 from fast_sdk.utils.check_sum import checksum_crc8
 from fast_sdk.utils.functions import Functions
 
 
 class BoardSDK:
     """
-    Represents a controller board with functionality to set RGB LEDs and buzzer with buttons.
+    Represents a controller board with functionality to set RGB LEDs, buzzer, and motors.
     """
 
     MAGIC_HEADER_1 = 0xAA
@@ -59,7 +60,7 @@ class BoardSDK:
                 )
             data.extend(struct.pack("<BBBB", int(index - 1), int(r), int(g), int(b)))
 
-        self.buf_write(Functions.FUNC_RGB.value, data)
+        self._send_data_to_port(Functions.FUNC_RGB.value, data)
 
     def set_led(
         self, on_time: float, off_time: float, repeat: int = 1, led_id: int = 1
@@ -82,15 +83,13 @@ class BoardSDK:
         if repeat < 1:
             raise ValueError(f"repeat must be at least 1. Received: {repeat}")
         if not (1 <= led_id <= 255):
-            raise ValueError(
-                f"led_id must be in the range 1-255. Received: {led_id}"
-            )
+            raise ValueError(f"led_id must be in the range 1-255. Received: {led_id}")
 
         on_time_ms = int(on_time * 1000)
         off_time_ms = int(off_time * 1000)
         data = struct.pack("<BHHH", led_id, on_time_ms, off_time_ms, repeat)
 
-        self.buf_write(Functions.FUNC_LED.value, data)
+        self._send_data_to_port(Functions.FUNC_LED.value, data)
 
     def set_buzzer(
         self, freq: int, on_time: float, off_time: float, repeat: int = 1
@@ -119,9 +118,33 @@ class BoardSDK:
         off_time_ms = int(off_time * 1000)
         data = struct.pack("<HHHH", freq, on_time_ms, off_time_ms, repeat)
 
-        self.buf_write(Functions.FUNC_BUZZER.value, data)
+        self._send_data_to_port(Functions.FUNC_BUZZER.value, data)
 
-    def buf_write(self, func: int, data: List[int]) -> None:
+    def set_motor_speed(self, speeds: List[Tuple[int, float]]) -> None:
+        """
+        Set the speed of motors.
+
+        :param speeds: List of tuples where each tuple contains (index, speed).
+        """
+        data = [0x01, len(speeds)]
+        for index, speed in speeds:
+            data.extend(struct.pack("<Bf", int(index - 1), float(speed)))
+
+        self._send_data_to_port(Functions.FUNC_MOTOR.value, data)
+
+    def set_motor_duty(self, duties: List[Tuple[int, float]]) -> None:
+        """
+        Set the duty cycle of motors.
+
+        :param duties: List of tuples where each tuple contains (index, duty).
+        """
+        data = [0x05, len(duties)]
+        for index, duty in duties:
+            data.extend(struct.pack("<Bf", int(index - 1), float(duty)))
+
+        self._send_data_to_port(Functions.FUNC_MOTOR.value, data)
+
+    def _send_data_to_port(self, func: int, data: List[int]) -> None:
         """
         Write a buffer to the serial port.
 

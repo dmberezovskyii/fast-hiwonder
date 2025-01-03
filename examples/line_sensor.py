@@ -1,6 +1,6 @@
 import time
 
-from fast_sdk.line_sdk import InfraredSensors
+from fast_sdk.infra_red import InfraredSensors
 
 sensor = InfraredSensors()
 while True:
