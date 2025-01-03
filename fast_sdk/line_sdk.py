@@ -1,5 +1,4 @@
 import smbus2
-import time
 
 
 class InfraredSensors:
