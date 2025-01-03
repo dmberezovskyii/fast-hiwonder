@@ -77,7 +77,7 @@ If the robot needs to move at a speed of 100 mm/s in the direction of 30 degrees
 
 
    ``` python
-   chassis = MecanumChassis()
+   chassis = Motors()
 
     # Move forward at 100 mm/s in the direction of 0 degrees (forward along the X-axis)
     chassis.set_velocity(100, 0, 0)
