@@ -9,10 +9,10 @@ keywords = ["SDK", "TurboPi", "Python", "Hiwonder"]
 readme = "README.md"
 
 packages = [
-    { include = "src" },
+    { include = "fast_sdk" },
     { include = "tests" },
     { include = "configs" },
-    { include = "utils", from = "src" }
+    { include = "utils", from = "fast_sdk" }
 ]
 
 [tool.poetry.dependencies]
