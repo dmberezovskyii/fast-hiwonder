@@ -4,8 +4,8 @@ import serial
 
 from typing import List, Tuple
 
-from src.utils.utils import checksum_crc8
-from src.functions import Functions
+from fast_sdk.utils.utils import checksum_crc8
+from fast_sdk.utils.functions import Functions
 
 
 class BoardSDK:
