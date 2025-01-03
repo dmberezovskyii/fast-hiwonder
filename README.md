@@ -10,6 +10,7 @@ The **Fast Wonder SDK** is a Python library that facilitates communication with 
 - **Control RGB LEDs**: Easily control the colors of RGB LEDs using indexed tuples.
 - **Control BUZZER**: Simple API to control the buzzer.
 - **Control Infrared Sensors**: Interface with infrared sensors to detect obstacles or follow lines.
+- **Control Motors**:
 - **Reliable Communication**: Ensures data integrity with CRC-8 checksum validation for communication.
 - **Configurable Serial Communication**: Adjust serial communication parameters such as baud rate, timeout, etc.
 
