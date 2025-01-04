@@ -1,3 +1,4 @@
+import logging
 import struct
 import time
 import serial
@@ -27,6 +28,7 @@ class BoardSDK:
         :param baudrate: Baud rate for serial communication.
         :param timeout: Timeout in seconds for serial communication.
         """
+        self.logger = logging.getLogger(__name__)
         self.enable_recv = False
         self.frame = []
         self.recv_count = 0
@@ -132,11 +134,30 @@ class BoardSDK:
 
         self._send_data_to_port(Functions.FUNC_MOTOR.value, data)
 
-    def set_motor_duty(self, duties):
-        data = [0x05, len(duties)]
-        for i in duties:
-            data.extend(struct.pack("<Bf", int(i[0] - 1), float(i[1])))
-        self._send_data_to_port(Functions.FUNC_MOTOR.value, data)
+    def set_motor_duty(self, duty: List[Tuple[int, float]]) -> None:
+        """
+        Set motor duty cycles
+
+        :param duty: List of tuples, where each tuple contains (motor_id, duty_cycle).
+                      motor_id: 1-based index of the motor.
+                      duty_cycle: Duty cycle value as a float.
+        """
+        if len(duty) > 4:
+            raise ValueError("Too many motors specified. Maximum is 4.")
+
+        # Preallocate the exact required size for the data list
+        data = bytearray(2 + len(duty) * 5)  # 2 for header, 5 bytes per motor (1 byte ID + 4 bytes float)
+        data[0] = 0x05  # Command ID
+        data[1] = len(duty)  # Number of motors
+
+
+        offset = 2
+        for motor_id, duty_cycle in duty:
+            motor_id = motor_id - 1  # Convert to 0-based index
+            struct.pack_into("<Bf", data, offset, motor_id, duty_cycle)
+            offset += 5
+
+        self._send_data_to_port(Functions.FUNC_MOTOR.value, list(data))
 
     def _send_data_to_port(self, func: int, data: List[int]) -> None:
         """
@@ -148,4 +169,8 @@ class BoardSDK:
         buf = [self.MAGIC_HEADER_1, self.MAGIC_HEADER_2, func, len(data)]
         buf.extend(data)
         buf.append(checksum_crc8(bytes(buf[2:])))
-        self.port.write(buf)
+        try:
+            self.port.write(bytes(buf))
+        except Exception as e:
+            self.logger.error("Failed to send data to port: %s", e, exc_info=True)
+            raise

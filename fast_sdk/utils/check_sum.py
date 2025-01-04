@@ -18,8 +18,14 @@ crc8_table = [
 ]
 
 
-def checksum_crc8(data):
+def checksum_crc8(data: bytes) -> int:
+    """
+    Calculate the CRC-8 checksum for the given data.
+
+    :param data: Input data as bytes.
+    :return: CRC-8 checksum as an integer.
+    """
     check = 0
     for d in data:
         check = crc8_table[check ^ d]
-    return check & 0x00FF
+    return check
