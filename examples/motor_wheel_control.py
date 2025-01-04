@@ -23,7 +23,7 @@ def move_in_square(
         time.sleep(side_length / speed)  # Wait for the robot to complete the side
 
         # Turn 90 degrees (clockwise)
-        mecanum_wheel.set_velocity_polar(0, 0, angular_rate, fake=fake)
+        mecanum_wheel.set_velocity_polar_coordinates(0, 0, angular_rate, fake=fake)
         time.sleep(90 / angular_rate)  # Wait for the robot to complete the turn
 
         # Reset the angular rate after turning

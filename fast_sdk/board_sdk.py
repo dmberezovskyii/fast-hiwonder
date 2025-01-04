@@ -132,16 +132,10 @@ class BoardSDK:
 
         self._send_data_to_port(Functions.FUNC_MOTOR.value, data)
 
-    def set_motor_duty(self, duties: List[Tuple[int, float]]) -> None:
-        """
-        Set the duty cycle of motors.
-
-        :param duties: List of tuples where each tuple contains (index, duty).
-        """
+    def set_motor_duty(self, duties):
         data = [0x05, len(duties)]
-        for index, duty in duties:
-            data.extend(struct.pack("<Bf", int(index - 1), float(duty)))
-
+        for i in duties:
+            data.extend(struct.pack("<Bf", int(i[0] - 1), float(i[1])))
         self._send_data_to_port(Functions.FUNC_MOTOR.value, data)
 
     def _send_data_to_port(self, func: int, data: List[int]) -> None:

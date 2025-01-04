@@ -1,77 +1,78 @@
+import sys
 import math
+
 from fast_sdk.board_sdk import BoardSDK
+
+board = BoardSDK()
 
 
 class Motors:
-    # Default params
-    DEFAULT_A = 67  # mm
-    DEFAULT_B = 59  # mm
-    DEFAULT_WHEEL_DIAMETER = 65  # mm
+    # A = 67  # mm
+    # B = 59  # mm
+    # WHEEL_DIAMETER = 65  # mm
 
-    # Motor IDs
-    MOTOR_IDS = [1, 2, 3, 4]
-
-    def __init__(self, a=DEFAULT_A, b=DEFAULT_B, wheel_diameter=DEFAULT_WHEEL_DIAMETER):
+    def __init__(self, a=67, b=59, wheel_diameter=65):
         self.a = a
         self.b = b
         self.wheel_diameter = wheel_diameter
         self.velocity = 0
         self.direction = 0
         self.angular_rate = 0
-        self.board = BoardSDK()
-        self.rad_per_deg = math.pi / 180
 
     def reset_motors(self):
-        """Stop all motors and reset movement attributes."""
-        self.board.set_motor_duty([(motor_id, 0) for motor_id in self.MOTOR_IDS])
+        board.set_motor_duty([[1, 0], [2, 0], [3, 0], [4, 0]])
+
         self.velocity = 0
         self.direction = 0
         self.angular_rate = 0
 
-    def set_velocity_polar(self, velocity, direction, angular_rate, fake=False):
+    def set_velocity_polar_coordinates(self, velocity, direction, angular_rate, fake=False):
         """
-        Use polar coordinates to control movement.
-        :param velocity: mm/s how fast its moving
-        :param direction: moving direction in degrees (0-360).
-        :param angular_rate: Rotation speed of the chassis.
-        :param fake: If True, no action is performed.
+        Use polar coordinates to control moving
+        motor1 v1|  ↑  |v2 motor2
+                 |     |
+        motor3 v3|     |v4 motor4
+        :param velocity: mm/s
+        :param direction: Moving direction 0~360deg, 180deg<--- ↑ ---> 0deg
+        :param angular_rate:  The speed at which the chassis rotates
+        :param fake:
+        :return:
         """
-        # Normalize direction to 0–360 degrees
-        direction %= 360
-
-        # Calculate velocity components
-        vx = velocity * math.cos(direction * self.rad_per_deg)
-        vy = velocity * math.sin(direction * self.rad_per_deg)
+        rad_per_deg = math.pi / 180
+        vx = velocity * math.cos(direction * rad_per_deg)
+        vy = velocity * math.sin(direction * rad_per_deg)
         vp = -angular_rate * (self.a + self.b)
-
-        # Motor duty cycle calculations
-        motor_speeds = [
-            (1, -int(vy + vx - vp)),  # Motor 1
-            (2, int(vy - vx + vp)),   # Motor 2
-            (3, -int(vy - vx - vp)),  # Motor 3
-            (4, int(vy + vx + vp))    # Motor 4
-        ]
-
-        # Apply motor duties if not in fake mode
-        if not fake:
-            self.board.set_motor_duty(motor_speeds)
-
-        # Update current state
+        v1 = int(vy + vx - vp)
+        v2 = int(vy - vx + vp)
+        v3 = int(vy - vx - vp)
+        v4 = int(vy + vx + vp)
+        if fake:
+            return
+        board.set_motor_duty([[1, -v1], [2, v2], [3, -v3], [4, v4]])
         self.velocity = velocity
         self.direction = direction
         self.angular_rate = angular_rate
 
     def move_chassis_cartesian(self, velocity_x, velocity_y, fake=False):
-        """
-        Move the chassis based on Cartesian coordinates.
-        :param velocity_x: Velocity in the X direction.
-        :param velocity_y: Velocity in the Y direction.
-        :param fake: If True, no action is performed.
-        """
-        # Calculate velocity magnitude and direction
-        velocity = math.hypot(velocity_x, velocity_y)
-        direction = math.degrees(math.atan2(velocity_y, velocity_x)) % 360
-
+        velocity = math.sqrt(velocity_x**2 + velocity_y**2)
+        if velocity_x == 0:
+            direction = (
+                90 if velocity_y >= 0 else 270
+            )  # pi/2 90deg, (pi * 3) / 2  270deg
+        else:
+            if velocity_y == 0:
+                direction = 0 if velocity_x > 0 else 180
+            else:
+                direction = math.atan(
+                    velocity_y / velocity_x
+                )  # θ=arctan(y/x) (x!=0)
+                direction = direction * 180 / math.pi
+                if velocity_x < 0:
+                    direction += 180
+                else:
+                    if velocity_y < 0:
+                        direction += 360
         if fake:
             return velocity, direction
-        self.set_velocity_polar(velocity, direction, 0)
+        else:
+            return self.set_velocity(velocity, direction, 0)
