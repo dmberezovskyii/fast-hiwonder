@@ -1,8 +1,7 @@
 import sys
 import time
 import signal
-from fast_sdk.motors import ControlChassis
-
+from fast_sdk.motors import ControlChassis, Direction
 
 # Ensure Python 3 is used
 if sys.version_info.major == 2:
@@ -37,7 +36,7 @@ if __name__ == '__main__':
     try:
         while start:
             # Control the chassis movement - Right direction example
-            chassis.set_direction(velocity=50, direction="Right")
+            chassis.set_direction(velocity=50, direction=Direction.BACKWARD)
             time.sleep(1)
 
     except Exception as e:

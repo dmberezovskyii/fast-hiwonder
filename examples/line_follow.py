@@ -28,9 +28,9 @@ if __name__ == "__main__":
     # Initialize components
     chassis = ControlChassis()
     sensor = InfraredSensors()
-    pid = PIDController(kp=1.0, kd=0.1)  # Customize Kp, Ki, and Kd values
-    weights = [-3, -1, 1, 3]  # Adjust weights based on sensor placement
-    base_speed = 50  # Base speed for the chassis
+    pid = PIDController(kp=0.9, kd=0.3)  # Customize Kp, Ki, and Kd values
+    weights = [-5, -1, 1, 5]  # Adjust weights based on sensor placement
+    base_speed = 30  # Base speed for the chassis
 
     # Create LineFollower instance
     line_follower = LineFollower(chassis, sensor, pid, weights, base_speed)

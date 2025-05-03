@@ -54,25 +54,23 @@ class LineFollower:
             while self.running:
                 # Read sensor data
                 sensor_data = self.sensor.read_sensor_data()
-                logging.info(
-                    "Sensor Readings -> Sensor1: %d, Sensor2: %d, Sensor3: %d, Sensor4: %d",
-                    *sensor_data
-                )
 
                 # Calculate error and correction
                 error = self.calculate_error(sensor_data)
-                correction = self.pid.calculate_accorrection(error)
+                correction = self.pid.calculate_correction(error)
+                print(correction)
 
                 # Calculate velocity, direction, and angular rate
                 velocity = self.base_speed
                 direction = (90 + correction) % 360  # Ensure direction is within 0-360 degrees
+                print(direction)
                 angular_rate = correction * 0.5  # Optional: adjust rotation rate based on correction
 
                 # Apply motor velocities using set_velocity
                 self.chassis.set_velocity(velocity, direction, angular_rate, fake=False)
 
                 # Add a small delay
-                time.sleep(0.1)
+                time.sleep(0.0)
 
         except Exception as e:
             logging.error("An error occurred: %s", e, exc_info=True)
