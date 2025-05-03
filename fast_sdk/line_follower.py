@@ -61,7 +61,7 @@ class LineFollower:
 
                 # Calculate error and correction
                 error = self.calculate_error(sensor_data)
-                correction = self.pid.calculate_correction(error)
+                correction = self.pid.calculate_accorrection(error)
 
                 # Calculate velocity, direction, and angular rate
                 velocity = self.base_speed
