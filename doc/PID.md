@@ -87,12 +87,9 @@ The PID (Proportional-Integral-Derivative) controller is a feedback mechanism wi
 The proportional component reacts to the **current error** between the desired and actual values. It applies a correction that is directly proportional to the error.
 
 - **Formula**:
-  \[
-  P = K_p \cdot e(t)
-  \]
+  proportional = self.kp * error
 - **Explanation**:
-  - \(K_p\): Proportional gain constant, which determines the system's sensitivity to the current error.
-  - \(e(t)\): Current error at time \(t\).
+  - kp: Proportional gain constant, which determines the system's sensitivity to the current error.
 - **Effect**:
   - Larger errors result in greater corrections, helping the system respond quickly.
   - However, it may not fully eliminate the error (steady-state error).
@@ -103,12 +100,10 @@ The proportional component reacts to the **current error** between the desired a
 The integral component accounts for **past errors** by summing them over time. It helps eliminate persistent errors (steady-state errors) that the proportional component cannot address.
 
 - **Formula**:
-  \[
-  I = K_i \int e(t) \, dt
-  \]
+  self.integral += error
+  integral = self.ki * self.integral
 - **Explanation**:
-  - \(K_i\): Integral gain constant, which determines how the system compensates for accumulated errors.
-  - \(\int e(t) \, dt\): The cumulative sum of errors over time.
+  - ki: Integral gain constant, which determines how the system compensates for accumulated errors.
 - **Effect**:
   - Reduces steady-state errors by accumulating small corrections.
   - Excessive integral action can lead to overshooting and instability.
@@ -119,12 +114,10 @@ The integral component accounts for **past errors** by summing them over time. I
 The derivative component anticipates **future trends** by observing the rate of change in the error. It applies a correction based on how quickly the error is changing.
 
 - **Formula**:
-  \[
-  D = K_d \frac{de(t)}{dt}
-  \]
+  derivative = self.kd * (error - self.last_error)
+  self.last_error = error
 - **Explanation**:
-  - \(K_d\): Derivative gain constant, which determines the system's response to rapid changes in error.
-  - \(\frac{de(t)}{dt}\): The rate of change of the error at time \(t\).
+  - kd: Derivative gain constant, which determines the system's response to rapid changes in error.
 - **Effect**:
   - Smoothes the system's response by dampening rapid changes and preventing overshooting.
   - Helps reduce oscillations and sharp movements.
