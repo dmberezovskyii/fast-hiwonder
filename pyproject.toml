@@ -13,6 +13,7 @@ packages = [
     { include = "tests" },
     { include = "configs" },
     { include = "examples" },
+    { include = "motors", from="examples" },
     { include = "utils", from = "fast_sdk" }
 ]
 
