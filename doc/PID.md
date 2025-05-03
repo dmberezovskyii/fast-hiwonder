@@ -79,40 +79,57 @@ def __init__(self, kp: float, ki: float = 0.0, kd: float = 0.0):
 
 ### **How PID Works**
 
-The PID controller adjusts the system's behavior by combining three components:
+The PID (Proportional-Integral-Derivative) controller is a feedback mechanism widely used in control systems to minimize the error between a desired setpoint and the current process variable. It calculates a correction by combining three components:
 
-1. **Proportional (P):**
-   - Reacts to the current error.
-   - Formula:
-     \[
-     P = K_p \cdot e(t)
-     \]
-     Where:
-     - \(K_p\): Proportional gain.
-     - \(e(t)\): Current error.
+---
 
-2. **Integral (I):**
-   - Reacts to the accumulated error over time.
-   - Formula:
-     \[
-     I = K_i \int e(t) dt
-     \]
-     Where:
-     - \(K_i\): Integral gain.
+#### **1. Proportional (P)**
+The proportional component reacts to the **current error** between the desired and actual values. It applies a correction that is directly proportional to the error.
 
-3. **Derivative (D):**
-   - Reacts to the rate of change of the error.
-   - Formula:
-     \[
-     D = K_d \frac{de(t)}{dt}
-     \]
-     Where:
-     - \(K_d\): Derivative gain.
+- **Formula**:
+  \[
+  P = K_p \cdot e(t)
+  \]
+- **Explanation**:
+  - \(K_p\): Proportional gain constant, which determines the system's sensitivity to the current error.
+  - \(e(t)\): Current error at time \(t\).
+- **Effect**:
+  - Larger errors result in greater corrections, helping the system respond quickly.
+  - However, it may not fully eliminate the error (steady-state error).
 
-**Output Correction**:
-\[
-u(t) = P + I + D = K_p \cdot e(t) + K_i \cdot \int e(t) dt + K_d \cdot \frac{de(t)}{dt}
-\]
+---
+
+#### **2. Integral (I)**
+The integral component accounts for **past errors** by summing them over time. It helps eliminate persistent errors (steady-state errors) that the proportional component cannot address.
+
+- **Formula**:
+  \[
+  I = K_i \int e(t) \, dt
+  \]
+- **Explanation**:
+  - \(K_i\): Integral gain constant, which determines how the system compensates for accumulated errors.
+  - \(\int e(t) \, dt\): The cumulative sum of errors over time.
+- **Effect**:
+  - Reduces steady-state errors by accumulating small corrections.
+  - Excessive integral action can lead to overshooting and instability.
+
+---
+
+#### **3. Derivative (D)**
+The derivative component anticipates **future trends** by observing the rate of change in the error. It applies a correction based on how quickly the error is changing.
+
+- **Formula**:
+  \[
+  D = K_d \frac{de(t)}{dt}
+  \]
+- **Explanation**:
+  - \(K_d\): Derivative gain constant, which determines the system's response to rapid changes in error.
+  - \(\frac{de(t)}{dt}\): The rate of change of the error at time \(t\).
+- **Effect**:
+  - Smoothes the system's response by dampening rapid changes and preventing overshooting.
+  - Helps reduce oscillations and sharp movements.
+
+---
 
 ### **Key Methods**
 
