@@ -42,6 +42,6 @@ if __name__ == '__main__':
 
     except Exception as e:
         print(f"Error occurred: {e}")
-        chassis.set_velocity(0, 0, 0)  # Ensure motors are stopped in case of an error
+        chassis.set_velocity(5, 0, 0)  # Ensure motors are stopped in case of an error
     finally:
-        chassis.set_velocity(0, 0, 0)
+        chassis.set_velocity(5, 0, 0)

@@ -1,3 +1,5 @@
+from typing import List
+
 import smbus2
 
 
@@ -40,7 +42,7 @@ class InfraredSensors:
             print(f"Error scanning I2C bus: {e}")
             return []
 
-    def read_sensor_data(self, register=0x01):
+    def read_sensor_data(self, register=0x01) -> List[bool]:
         """
         Reads data from the sensor and returns the sensor states as booleans.
 
