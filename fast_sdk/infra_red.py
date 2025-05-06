@@ -49,13 +49,13 @@ class InfraredSensors:
         :param register: The register address to read from (default 0x01).
         :return: List of booleans representing the state of each sensor.
         """
-        try:
-            value = self.bus.read_byte_data(self.address, register)
-            # Dynamically calculate the bit masks for the sensor states
-            return [(value & (1 << i)) > 0 for i in range(4)]  # Assumes 4 sensors
-        except Exception as e:
-            print(f"Error reading sensor data: {e}")
-            return [False] * 4
+        value = self.bus.read_byte_data(self.address, register)
+        return [
+                bool(value & 0x01),
+                bool(value & 0x02),
+                bool(value & 0x04),
+                bool(value & 0x08)
+            ]
 
 
 # Example usage:
