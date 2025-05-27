@@ -22,6 +22,7 @@ To get started with Fast Wonder SDK, follow these steps:
 1. **Clone the repository**:
    ```bash
    pip install fast-hiwonder
+    ```
    
    ```bash
    git clone https://github.com/dmberezovskyii/fast-hiwonder.git
