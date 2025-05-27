@@ -3,9 +3,10 @@
 
 # Fast Wonder SDK
 
-The **Fast Wonder SDK** is a Python library that facilitates communication with the **Hiwonder TurboPi controller**. It provides easy-to-use functions for controlling various peripherals such as RGB LEDs, buzzers, infrared sensors, and more, while ensuring reliable communication with checksum validation using CRC-8.
+The **Fast Wonder SDK** is a Python library that facilitates communication with the [Hiwonder TurboPi](https://www.hiwonder.com/). It provides easy-to-use functions for controlling various peripherals such as RGB LEDs, buzzers, infrared sensors, and more, while ensuring reliable communication with checksum validation using CRC-8, designed to be **educational** and **simple** – ideal for students (ages 10+), teachers and hobbyists.
 
-## Features
+
+✅ Built-in support for:
 
 - **Control RGB LEDs**: Easily control the colors of RGB LEDs using indexed tuples.
 - **Control BUZZER**: Simple API to control the buzzer.
@@ -19,6 +20,8 @@ The **Fast Wonder SDK** is a Python library that facilitates communication with 
 To get started with Fast Wonder SDK, follow these steps:
 
 1. **Clone the repository**:
+   ```bash
+   pip install fast-hiwonder
    ```bash
    git clone https://github.com/dmberezovskyii/fast-hiwonder.git
 
